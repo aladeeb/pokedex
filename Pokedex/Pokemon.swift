@@ -12,83 +12,96 @@ import ObjectMapper
 import SwiftyJSON
 
 class Pokemon : Mappable {
-    private var _name: String!
-    private var _id: Int!
-    private var _descObj: Dictionary<String, String>!
-    private var _description: String!
-    private var _types: [Dictionary<String, String>]!
-    private var _defense: Int!
-    private var _height: String!
-    private var _weight: String!
-    private var _attack: Int!
-    private var _nextEvoluation: Dictionary<String, Any>!
-    private var _pokemonURL: String!
-
-    var name: String {
-        return _name.capitalized
+    private var name: String!
+    private var id: Int!
+    private var description: String!
+    private var defense: Int!
+    private var height: String!
+    private var weight: String!
+    private var attack: Int!
+    private var nextEvoluation: Dictionary<String, Any>!
+    private var pokemonURL: String!
+    private var types : [Type]!
+    private var type : String!
+    
+    var _name: String {
+        get {
+            return name.capitalized
+        } set {
+            name = newValue
+        }
     }
     
-    var type: String {
-        if _types.count == 0 || _types == nil {
-            return ""
-        } else {
-            var string = ""
-            for x in 0..<_types.count {
-                string += _types[x]["name"]!.capitalized
-                if x != _types.count - 1 {
-                    string += "/"
-                }
+    var _id: Int {
+        get {
+            return id
+        } set {
+            id = newValue
+        }
+    }
+    
+    var _description: String {
+        get {
+            if description == nil {
+                return ""
             }
-            return string
+            return description
+        } set {
+            description = newValue
+        }
+    }
+    
+    var _attack: Int {
+        get {
+            if attack == nil {
+                return 0
+            }
+            return attack
+        } set {
+            attack = newValue
+        }
+    }
+    
+    var _defense: Int {
+        get {
+            if defense == nil {
+                return 0
+            }
+            return defense
+        } set {
+            defense = newValue
+        }
+    }
+    
+    var _height : String {
+        get {
+            if height == nil {
+                return ""
+            }
+            return height
+        } set {
+            height = newValue
+        }
+    }
+    
+    var _weight: String {
+        get {
+            if weight == nil {
+                return ""
+            }
+            return weight
+        } set {
+            weight = newValue
         }
     }
 
-    var id: Int {
-        return _id
-    }
-    
-    var description: String {
-        if _description == nil {
-            return ""
-        }
-        return _description
-    }
-    
-    var attack: String {
-        if _attack == nil {
-            return ""
-        }
-        return String(_attack)
-    }
-    
-    var defense: String {
-        if _defense == nil {
-            return ""
-        }
-        return String(_defense)
-    }
-    
-    var height : String {
-        if _height == nil {
-            return ""
-        }
-        return _height
-    }
-    
-    var weight: String {
-        if _weight == nil {
-            return ""
-        }
-        return _weight
-    }
-
-    var nextEvoluationText: String {
-        if _nextEvoluation == nil {
+    var _nextEvoluationText: String {
+        if nextEvoluation == nil {
             return "No Evoluation Level"
         }
         
-        if let name = _nextEvoluation["to"] {
-            if let level = _nextEvoluation["level"] {
+        if let name = nextEvoluation["to"] {
+            if let level = nextEvoluation["level"] {
                 return "Next Evoluation: \(name) LVL:\(level)"
             } else {
                 return "Next Evoluation: \(name)"
@@ -98,20 +111,42 @@ class Pokemon : Mappable {
         }
     }
 
-    var nextEvoluationId: String {
-        if _nextEvoluation == nil {
+    var _nextEvoluationId: String {
+        if nextEvoluation == nil {
             return ""
         }
-        let string = _nextEvoluation["resource_uri"]! as! String
+        let string = nextEvoluation["resource_uri"]! as! String
         let newString = string.replacingOccurrences(of: "/api/v1/pokemon/", with: "")
         let id = newString.replacingOccurrences(of: "/", with: "")
         return id
     }
     
+    private var _types : [Type] {
+        get {
+            return types
+        } set {
+            types = newValue
+        }
+    }
+    
+    var _type : String {
+        get {
+            var string = ""
+            if(_types.count != 0) {
+                for t in _types {
+                    string += "\(t._name.capitalized)/"
+                }
+                string.remove(at: string.index(before: string.endIndex))
+            }
+            return string
+        }
+    }
+    
     init(name: String, id: Int) {
-        self._id = id
-        self._name = name
-        self._pokemonURL = "\(URL_BASE)\(URL_POKEMON)\(self._id!)/"
+        self.id = id
+        self.name = name
+        self.pokemonURL = "\(URL_BASE)\(URL_POKEMON)\(self.id!)/"
+        types = [Type]()
     }
     
     required init?(map: Map) {
@@ -124,28 +159,17 @@ class Pokemon : Mappable {
         _height <- map["height"]
         _weight <- map["weight"]
         _types <- map["types"]
-        _nextEvoluation <- map["evolutions.0"]
-        _descObj <- map["descriptions.0"]
     }
     
     func downloadPokemonDetails(completed: @escaping DownloadComplete) {
-        Alamofire.request(_pokemonURL).responseJSON { response in
+        Alamofire.request(pokemonURL).responseJSON { response in
             let result = response.result
             switch result {
             case .success(let value):
-                let json = JSON(value)
+                var json = JSON(value)
+                
                 self.mapping(map: Map(mappingType: .fromJSON, JSON: json.dictionaryObject!))
-                Alamofire.request("\(URL_BASE)\(self._descObj["resource_uri"]!)").responseJSON(completionHandler: { response in
-                    switch response.result {
-                    case .success(let value):
-                        let json = JSON(value)
-                        self._description = json["description"].string!
-                    case .failure(let error):
-                        print(error)
-                    }
-                    completed()
-                })
-
+                print(self._type)
                 break
                 
             case .failure(let error) :
