@@ -7,23 +7,21 @@
 //
 
 import Foundation
-import Alamofire
 import ObjectMapper
 import SwiftyJSON
 
 class Pokemon : Mappable {
-    private var name: String!
+    
     private var id: Int!
+    private var name: String!
     private var description: String!
     private var defense: Int!
     private var height: String!
     private var weight: String!
     private var attack: Int!
-    private var nextEvoluation: Dictionary<String, Any>!
-    private var pokemonURL: String!
     private var types : [Type]!
     private var type : String!
-    
+
     var _name: String {
         get {
             return name.capitalized
@@ -94,32 +92,6 @@ class Pokemon : Mappable {
             weight = newValue
         }
     }
-
-    var _nextEvoluationText: String {
-        if nextEvoluation == nil {
-            return "No Evoluation Level"
-        }
-        
-        if let name = nextEvoluation["to"] {
-            if let level = nextEvoluation["level"] {
-                return "Next Evoluation: \(name) LVL:\(level)"
-            } else {
-                return "Next Evoluation: \(name)"
-            }
-        } else {
-            return ""
-        }
-    }
-
-    var _nextEvoluationId: String {
-        if nextEvoluation == nil {
-            return ""
-        }
-        let string = nextEvoluation["resource_uri"]! as! String
-        let newString = string.replacingOccurrences(of: "/api/v1/pokemon/", with: "")
-        let id = newString.replacingOccurrences(of: "/", with: "")
-        return id
-    }
     
     private var _types : [Type] {
         get {
@@ -145,7 +117,6 @@ class Pokemon : Mappable {
     init(name: String, id: Int) {
         self.id = id
         self.name = name
-        self.pokemonURL = "\(URL_BASE)\(URL_POKEMON)\(self.id!)/"
         types = [Type]()
     }
     
@@ -161,23 +132,5 @@ class Pokemon : Mappable {
         _types <- map["types"]
     }
     
-    func downloadPokemonDetails(completed: @escaping DownloadComplete) {
-        Alamofire.request(pokemonURL).responseJSON { response in
-            let result = response.result
-            switch result {
-            case .success(let value):
-                var json = JSON(value)
-                
-                self.mapping(map: Map(mappingType: .fromJSON, JSON: json.dictionaryObject!))
-                print(self._type)
-                break
-                
-            case .failure(let error) :
-                print(error.localizedDescription)
-                break
-            }
-            completed()
-        }
-    }
-    
+
 }

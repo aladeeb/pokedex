@@ -159,7 +159,7 @@
                         <viewControllerLayoutGuide type="top" id="IaL-tJ-WrL"/>
                         <viewControllerLayoutGuide type="bottom" id="79n-dE-2y5"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="UIl-Zd-LEu">
+                    <view key="view" contentMode="scaleToFill" id="UIl-Zd-LEu" customClass="PokeDetailsView" customModule="Pokedex" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -413,20 +413,20 @@
                             <constraint firstItem="94a-tw-Lke" firstAttribute="centerX" secondItem="UIl-Zd-LEu" secondAttribute="centerX" id="wLE-fx-1hg"/>
                             <constraint firstItem="eRs-g9-Xrm" firstAttribute="top" secondItem="94a-tw-Lke" secondAttribute="bottom" constant="8" id="wO0-Zk-yM6"/>
                         </constraints>
+                        <connections>
+                            <outlet property="nameLabel" destination="hZ8-AX-NGW" id="9CE-s7-5kV"/>
+                            <outlet property="pokeBaseAttack" destination="zEG-Mm-rnT" id="RLZ-S2-cs8"/>
+                            <outlet property="pokeDefense" destination="yQ9-d6-2sh" id="819-7B-lqD"/>
+                            <outlet property="pokeDesc" destination="yIU-DU-OQi" id="Lyj-M5-ooA"/>
+                            <outlet property="pokeHeight" destination="VIZ-LR-K77" id="5lU-oc-If4"/>
+                            <outlet property="pokeID" destination="Kqh-ZY-Qvj" id="fN9-Ja-JMT"/>
+                            <outlet property="pokeImage" destination="kSs-br-gHE" id="7sl-dg-G3b"/>
+                            <outlet property="pokeType" destination="tdm-Su-40Q" id="F42-b4-l4p"/>
+                            <outlet property="pokeWeight" destination="vpH-Ar-UoO" id="mFd-Fn-epm"/>
+                        </connections>
                     </view>
                     <connections>
-                        <outlet property="baseAttackLabel" destination="zEG-Mm-rnT" id="NLN-cb-sKf"/>
-                        <outlet property="currentEvoluationImage" destination="RNm-7Z-dP4" id="W2a-Th-pyB"/>
-                        <outlet property="defenseLabel" destination="yQ9-d6-2sh" id="qg9-UK-OIP"/>
-                        <outlet property="descLabel" destination="yIU-DU-OQi" id="4aA-UJ-ot9"/>
-                        <outlet property="heightLabel" destination="VIZ-LR-K77" id="4hv-rl-Nfh"/>
-                        <outlet property="idLabel" destination="Kqh-ZY-Qvj" id="5rn-hR-0eI"/>
-                        <outlet property="mainImage" destination="kSs-br-gHE" id="BGe-Bi-hvx"/>
-                        <outlet property="nameLabel" destination="hZ8-AX-NGW" id="3Bi-Yc-uQv"/>
-                        <outlet property="nextEvoluationImage" destination="Dbh-vr-Gjy" id="1kC-lC-YDR"/>
-                        <outlet property="nextEvoluationLabel" destination="Uhv-F1-4sl" id="udV-vj-6OH"/>
-                        <outlet property="typeLabel" destination="tdm-Su-40Q" id="KgB-fF-vQZ"/>
-                        <outlet property="weightLabel" destination="vpH-Ar-UoO" id="0no-58-9Ml"/>
+                        <outlet property="pokeDetailsView" destination="UIl-Zd-LEu" id="f2U-vS-EXr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R26-En-8aA" userLabel="First Responder" sceneMemberID="firstResponder"/>
