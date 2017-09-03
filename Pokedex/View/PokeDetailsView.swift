@@ -18,6 +18,9 @@ class PokeDetailsView: UIView {
     @IBOutlet weak var pokeID: UILabel!
     @IBOutlet weak var pokeWeight: UILabel!
     @IBOutlet weak var pokeBaseAttack: UILabel!
+    @IBOutlet weak var pokeCurrentEvoImage: UIImageView!
+    @IBOutlet weak var pokeNextEvoImage: UIImageView!
+    @IBOutlet weak var nextEvoText: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     
     func configureView(_ poke : Pokemon) {
@@ -30,5 +33,8 @@ class PokeDetailsView: UIView {
         pokeWeight.text = poke._weight
         pokeBaseAttack.text = String(poke._attack)
         pokeDesc.text = poke._description
+        nextEvoText.text = "Next Evolution: \(poke._evolution._to) - LVL: \(poke._evolution._level)"
+        pokeCurrentEvoImage.image = UIImage(named : "\(poke._id)")
+        pokeNextEvoImage.image = UIImage(named: "\(poke._evolution._nextEvolutionId)")
     }
 }

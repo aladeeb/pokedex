@@ -19,8 +19,9 @@ class Pokemon : Mappable {
     private var height: String!
     private var weight: String!
     private var attack: Int!
-    private var types : [Type]!
-    private var type : String!
+    private var types: [Type]!
+    private var type: String!
+    private var evolution: Evolution!
 
     var _name: String {
         get {
@@ -114,10 +115,21 @@ class Pokemon : Mappable {
         }
     }
     
+    var _evolution: Evolution {
+        get {
+            return evolution
+        } set {
+            evolution = newValue
+        }
+    }
+    
+
+    
     init(name: String, id: Int) {
         self.id = id
         self.name = name
         types = [Type]()
+        evolution = Evolution()
     }
     
     required init?(map: Map) {
@@ -130,6 +142,7 @@ class Pokemon : Mappable {
         _height <- map["height"]
         _weight <- map["weight"]
         _types <- map["types"]
+        _evolution <- map["evolutions.0"]
     }
     
 

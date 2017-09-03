@@ -21,7 +21,6 @@ class MainVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         collection.delegate = self
         collection.dataSource = self
         searchBar.delegate = self
